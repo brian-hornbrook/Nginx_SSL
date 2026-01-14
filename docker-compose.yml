@@ -5,13 +5,15 @@ services:
     volumes:
       - ./your_quality_programmer:/code
       - static:/static
-    build:
-      context: ./your_quality_programmer
+    build: .
     ports:
       - '8000:8000'
     command: >
-      bash -c "
-      python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      sh -c "
+        python manage.py collectstatic --noinput
+        python manage.py migrate --noinput
+        python -m gunicorn --bind 0.0.0.0:8000 --workers 3 your_quality_programmer.wsgi:application
+      "
     develop:
       watch:
         - action: sync
@@ -38,7 +40,7 @@ services:
     volumes:
       - certbot_www:/var/www/certbot
       - certbot_etc:/etc/letsencrypt
-    command: certonly --webroot --webroot-path=/var/www/certbot --email your-email@example.com --agree-tos --no-eff-email --staging -d example.com -d www.example.com
+    command: certonly --webroot --webroot-path=/var/www/certbot --email yourqualityprogrammer@gmail.com --agree-tos --no-eff-email --staging -d yourhonestprogrammer.com -d www.yourhonestprogrammer.com
 
 volumes:
   static:
