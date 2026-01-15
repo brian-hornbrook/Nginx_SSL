@@ -1,18 +1,18 @@
 services:
   # BACKEND SERVER
   myapp:
+    container_name: ssl
     # restart: unless-stopped
     volumes:
       - ./your_quality_programmer:/code
-      - static:/static
+      - static:/app/static
     build: .
     ports:
       - '8000:8000'
     command: >
       sh -c "
         python manage.py collectstatic --noinput
-        python manage.py migrate --noinput
-        python -m gunicorn --bind 0.0.0.0:8000 --workers 3 your_quality_programmer.wsgi:application
+        python manage.py runserver 0.0.0.0:8000
       "
     develop:
       watch:
@@ -24,6 +24,7 @@ services:
 
   # NGINX SERVER
   nginx:
+    container_name: ssl-proxy
     build: ./nginx
     ports:
       - '80:80'
@@ -36,6 +37,7 @@ services:
 
   # CERTBOT
   certbot:
+    container_name: ssl-cert
     image: certbot/certbot
     volumes:
       - certbot_www:/var/www/certbot
