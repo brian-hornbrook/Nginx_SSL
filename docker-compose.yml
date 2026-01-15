@@ -39,13 +39,13 @@ services:
       - myapp
 
   # CERTBOT
-  certbot:
-    container_name: ssl-cert
-    image: certbot/certbot
-    volumes:
-      - certbot_www:/var/www/certbot
-      - certbot_etc:/etc/letsencrypt
-    command: certonly --webroot --webroot-path=/var/www/certbot --email yourqualityprogrammer@gmail.com --agree-tos --no-eff-email --staging -d yourhonestprogrammer.com -d www.yourhonestprogrammer.com
+#  certbot:
+#    container_name: ssl-cert
+#    image: certbot/certbot
+#    volumes:
+#      - certbot_www:/var/www/certbot
+#      - certbot_etc:/etc/letsencrypt
+#    command: certonly --webroot --webroot-path=/var/www/certbot --email yourqualityprogrammer@gmail.com --agree-tos --no-eff-email --staging -d yourhonestprogrammer.com -d www.yourhonestprogrammer.com
 
 volumes:
   static:
